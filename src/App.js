@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { motion } from "framer-motion";
+import images from "./images";
+import { useEffect, useRef, useState } from "react";
 
 function App() {
+  const [width, setWidth] = useState(0);
+  const widthRed = useRef();
+  useEffect(() => {
+    setWidth(widthRed.current.scrollWidth - widthRed.current.offsetWidth);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <motion.div ref={widthRed} className="container">
+      <motion.div
+        drag="x"
+        dragConstraints={{ right: 0, left: -width }}
+        className="drawer"
+      >
+        {images.map((image) => (
+          <motion.div key={image} className="item">
+            <img src={image} alt="" />
+          </motion.div>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 }
 
